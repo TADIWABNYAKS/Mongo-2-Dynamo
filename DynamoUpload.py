@@ -36,11 +36,16 @@ def query_mongo(collection_name):
     return collection.find({})
 
 def save_to_excel(df_list, sheet_list, file_name):
-    """Save multiple DataFrames locally to an Excel file with specified sheet names."""
-    with pd.ExcelWriter(file_name, engine='xlsxwriter') as writer:
+    """Save multiple DataFrames locally to an excel and a csv file with specified sheet names."""
+    xlsx_file_name = file_name + ".csv"
+    csv_file_name = file_name  + '.csv'
+    with pd.ExcelWriter(xlsx_file_name, engine='xlsxwriter') as writer:
         for df, sheet in zip(df_list, sheet_list):
             df.to_excel(writer, sheet_name=sheet, startrow=0, startcol=0, index=False)
-
+         writer.save()
+    df = pd.concat(df_list) #Merge the dataframes
+    df.to_csv(csv_file_name)
+    
 def migrate_collection(collection):
     """Migrate data from a MongoDB collection to DynamoDB and save to a local DataFrame."""
     cursor = query_mongo(collection)
@@ -82,7 +87,7 @@ if __name__ == '__main__':
             send_teams_message(f"Migration for {collection_name} finished")
             time.sleep(5)  # Avoid hitting rate limits or overwhelming the destination
         
-        save_to_excel(df_list, sheet_list, f"{MONGO_DB_NAME}_migration.xlsx")
+        save_to_excel(df_list, sheet_list, f"{MONGO_DB_NAME}_migration")
         
         send_teams_message("Migration complete")
     except Exception as e:

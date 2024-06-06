@@ -17,6 +17,6 @@ pandas: ```pip install pandas```
 Install the libraries , and from there replace the constants in the DynamoUpload.py script to your database info or to reference your ENV variable. From there's it's as simple as pressing run and waiting a couple hrs for the entire db to be moved. 
 
 ### PRO TIP‼️:This script can run locally but , for your own sanity it's probably best to run it on an EC2 machine or a machine with reliable connectivity as any major network disruptions will stop the migration mid way.
-### WARNING⚠️: Works for all the datatypes that were in my database but if you're using something that can raise an error in dynamo , you should convert the field before upload. Like what I did in the migrate_collection method line 52 fore float to Decimal
+### WARNING⚠️: Works for all the datatypes that were in my database but if you're using something that can raise an error in dynamo , you should convert the field before upload. Like what I did in the migrate_collection method line 52 for float to Decimal
 
 
